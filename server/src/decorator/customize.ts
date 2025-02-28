@@ -14,3 +14,6 @@ export const User = createParamDecorator(
     return data ? user?.[data] : user;
   },
 );
+export const RESPONSE_MESSAGE = 'response_message';
+export const ResponseMessage = (message: string) =>
+  SetMetadata(RESPONSE_MESSAGE, message);
