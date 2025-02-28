@@ -12,9 +12,12 @@ import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { IUser } from '../users/users.interface';
-import {ResponseMessage, User} from '../decorator/customize';
+import { ResponseMessage, User } from '../decorator/customize';
 
-@Controller('companies')
+@Controller({
+  version: '1',
+  path: 'companies',
+})
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {}
 
@@ -28,6 +31,7 @@ export class CompaniesController {
   findAll(
     @Query('page') currentPage: string,
     @Query('limit') limit: string,
+
     @Query() qs: string,
   ) {
     return this.companiesService.findAll(+currentPage, +limit, qs);
