@@ -16,9 +16,6 @@ export class UsersService {
     const salt = genSaltSync(10);
     return hashSync(password, salt);
   };
-  // create(createUserDto: CreateUserDto) {
-  //   return 'This action adds a new user';
-  // }
   async create(createUserDto: CreateUserDto) {
     const { email, password, name } = createUserDto;
     const hashedPassword = this.getHashPassword(password);
