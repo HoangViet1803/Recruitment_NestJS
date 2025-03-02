@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Public } from '../decorator/customize';
+import { ResponseMessage, User } from '../decorator/customize';
+import { UpdateUserGuard } from './guards/users.guards';
 
 @Controller({
   version: '1',
@@ -18,8 +20,7 @@ import { Public } from '../decorator/customize';
 })
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @Public()
+  @ResponseMessage('Create a new User')
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
@@ -35,6 +36,8 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  @UseGuards(UpdateUserGuard)
+  @ResponseMessage('Update a User')
   @Patch()
   update(@Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(updateUserDto);

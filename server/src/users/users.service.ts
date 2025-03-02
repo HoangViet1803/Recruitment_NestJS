@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { CreateUserDto, RegisterUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
@@ -16,10 +16,46 @@ export class UsersService {
     const salt = genSaltSync(10);
     return hashSync(password, salt);
   };
+
+  async isEmailExisted(email: string) {
+    const user = await this.findOneByUsername(email);
+    return user !== null;
+  }
   async create(createUserDto: CreateUserDto) {
-    const { email, password, name } = createUserDto;
-    const hashedPassword = this.getHashPassword(password);
-    return this.userModel.create({ email, password: hashedPassword, name });
+    const { email, password, ...restUserData } = createUserDto;
+    const isEmailExisted = await this.isEmailExisted(email);
+    if (!isEmailExisted) {
+      const hashedPassword = this.getHashPassword(password);
+      const newUser = await this.userModel.create({
+        email,
+        password: hashedPassword,
+        ...restUserData,
+      });
+      return {
+        _id: newUser._id,
+        createdAt: newUser.createdAt,
+      };
+    } else {
+      throw new BadRequestException('Email already existed');
+    }
+  }
+
+  async register(registerUserDto: RegisterUserDto) {
+    const { email, password, ...restUserData } = registerUserDto;
+    const isEmailExisted = await this.isEmailExisted(email);
+    if (!isEmailExisted) {
+      const hashedPassword = this.getHashPassword(password);
+      console.log(hashedPassword);
+      return this.userModel.create({
+        email,
+        password: hashedPassword,
+        ...restUserData,
+        role: 'USER',
+        company: null,
+      });
+    } else {
+      throw new BadRequestException('Email already existed');
+    }
   }
 
   findAll() {
@@ -41,9 +77,16 @@ export class UsersService {
   }
 
   async update(updateUserDto: UpdateUserDto) {
-    return this.userModel.updateOne(
+    const updateData = { ...updateUserDto };
+
+    // Kiểm tra nếu password có trong object (do request gửi lên) thì loại bỏ
+    if ('password' in updateData) {
+      delete updateData.password;
+    }
+
+    return await this.userModel.updateOne(
       { _id: updateUserDto._id },
-      { ...updateUserDto },
+      updateData,
     );
   }
 
