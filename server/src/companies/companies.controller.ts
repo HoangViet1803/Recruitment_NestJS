@@ -31,7 +31,6 @@ export class CompaniesController {
   findAll(
     @Query('page') currentPage: string,
     @Query('limit') limit: string,
-
     @Query() qs: string,
   ) {
     return this.companiesService.findAll(+currentPage, +limit, qs);
