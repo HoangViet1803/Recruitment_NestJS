@@ -5,10 +5,10 @@ export type JobDocument = HydratedDocument<Job>;
 
 @Schema({ timestamps: true })
 export class Job {
-  @Prop({ type: String, required: true })
+  @Prop({ type: String })
   name: string;
 
-  @Prop({ type: [String], required: true })
+  @Prop({ type: [String] })
   skills: string[];
 
   @Prop({
@@ -19,10 +19,10 @@ export class Job {
   })
   company: { _id: mongoose.Schema.Types.ObjectId; name: string };
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String })
   jobLocation: string;
 
-  @Prop({ type: Number, required: true })
+  @Prop({ type: Number })
   salary: number;
 
   @Prop({ type: Number })
