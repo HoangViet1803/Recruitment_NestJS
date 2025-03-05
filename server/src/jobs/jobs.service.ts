@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -6,6 +10,7 @@ import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { Job, JobDocument } from './schemas/job.schema';
 import { IUser } from '../users/users.interface';
 import aqp from 'api-query-params';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class JobsService {
@@ -57,6 +62,9 @@ export class JobsService {
   }
 
   findOne(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id) || !id) {
+      throw new BadRequestException('ID không hợp lệ hoặc không được cung cấp');
+    }
     return this.jobModel.findById({ _id: id });
   }
 

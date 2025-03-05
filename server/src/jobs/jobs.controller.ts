@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
-  Query,
+  Query, BadRequestException,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
@@ -15,6 +15,7 @@ import { UpdateJobDto } from './dto/update-job.dto';
 import { checkRoleGuard } from './guards/job.guard';
 import { ResponseMessage, User } from '../decorator/customize';
 import { IUser } from '../users/users.interface';
+import mongoose from 'mongoose';
 
 @Controller('jobs')
 export class JobsController {
