@@ -21,7 +21,7 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Post('upload')
-  @ResponseMessage('Uploaded file')
+  @ResponseMessage('Upload single file')
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(
     @UploadedFile(
@@ -39,7 +39,9 @@ export class FilesController {
     )
     file: Express.Multer.File,
   ) {
-    console.log(file);
+    return {
+      fileName: file.filename,
+    };
   }
 
   @Get()
