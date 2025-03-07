@@ -15,9 +15,10 @@ export class Job {
     type: {
       _id: { type: mongoose.Schema.Types.ObjectId, required: true },
       name: { type: String, required: true },
+      logo: { type: String },
     },
   })
-  company: { _id: mongoose.Schema.Types.ObjectId; name: string };
+  company: { _id: mongoose.Schema.Types.ObjectId; name: string, logo: string };
 
   @Prop({ type: String })
   jobLocation: string;

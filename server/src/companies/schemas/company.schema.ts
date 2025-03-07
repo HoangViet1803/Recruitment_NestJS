@@ -15,7 +15,7 @@ export class Company {
   description: string;
 
   @Prop()
-  role: string;
+  logo: string;
 
   @Prop()
   refreshToken: string;

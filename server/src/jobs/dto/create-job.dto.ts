@@ -18,6 +18,9 @@ class CompanyDto {
 
   @IsString()
   name: string;
+
+  @IsString()
+  logo: string;
 }
 
 export class CreateJobDto {
