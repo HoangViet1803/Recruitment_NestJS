@@ -21,12 +21,12 @@ export class CreateResumeDto {
 
   @IsString()
   @IsOptional()
-  url?: string;
+  url: string;
 
   @IsEnum(['PENDING', 'REVIEWING', 'APPROVED', 'REJECTED'])
   @IsOptional()
   @IsNotEmpty({ message: 'status không được để trống' })
-  status?: string;
+  status: string;
 
   @IsMongoId()
   @IsOptional()

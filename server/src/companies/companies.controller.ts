@@ -12,7 +12,7 @@ import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { IUser } from '../users/users.interface';
-import {Public, ResponseMessage, User} from '../decorator/customize';
+import { Public, ResponseMessage, User } from '../decorator/customize';
 
 @Controller({
   version: '1',
